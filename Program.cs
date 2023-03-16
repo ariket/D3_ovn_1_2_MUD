@@ -1,6 +1,8 @@
 ﻿
 
+using System.Diagnostics;
 using System.Globalization;
+using System.Net.NetworkInformation;
 using System.Runtime.Intrinsics.Arm;
 using System.Xml.Linq;
 using static D3_ovn_1_2_MUD.Program;
@@ -53,6 +55,13 @@ namespace D3_ovn_1_2_MUD
             {
                 int nr = 0;
                 string commando = null;
+
+                Stopwatch stopWatch = new Stopwatch();
+                stopWatch.Start();
+               
+               
+
+
                 Console.WriteLine("n - gå norrut, s - gå söderut, v - gå västerut, ö - gå österut");
                 rooms[0].Print();
 
@@ -97,6 +106,16 @@ namespace D3_ovn_1_2_MUD
 
                 } while (commando != "q");
 
+                stopWatch.Stop(); // Get the elapsed time as a TimeSpan value.
+                TimeSpan ts = stopWatch.Elapsed;
+                Console.WriteLine($"tid  :    {ts}");
+
+            }
+
+            public int Slump()
+            {
+                Random random = new Random();
+                return random.Next(1, 10);
             }
 
             public void Load(String file)
@@ -115,6 +134,13 @@ namespace D3_ovn_1_2_MUD
             }
         }
 
+        /* TODO lägga till timer för att mäta tid, frågesport och samtidigt ta sig från rum 0 till rum 26.
+         * göra textfil med frågor och svar
+         * slumpgenerator om rummet i fråga kräver att man svara rätt på en fråga innan man kan gå vidare
+         * slumpgenerator som slumpvis hämtar frågor från textfilen.
+
+        */
+    
 
         public static String[] command;
         static readonly string rootFolder = @"C:\Temp\Data\";// Default folder
@@ -124,6 +150,9 @@ namespace D3_ovn_1_2_MUD
             Console.WriteLine("Hello, Welcome to a MUD like game");
 
             Game game = new Game();
+            
+           
+
 
             do
             {
