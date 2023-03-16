@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Net.NetworkInformation;
@@ -53,6 +54,7 @@ namespace D3_ovn_1_2_MUD
 
             public void Start()
             {
+                bool quiz = true;
                 int nr = 0;
                 string commando = null;
 
@@ -70,28 +72,32 @@ namespace D3_ovn_1_2_MUD
                     Console.Write(">  ");
                     commando = Console.ReadLine();
 
-                    if (commando == "n" && rooms[nr].Getnorth() != -1)
+                    if (commando == "n" && rooms[nr].Getnorth() != -1 && quiz == true)
                     {
                         nr = rooms[nr].Getnorth();
                         rooms[nr].Print();
+                        quiz = Slump(); Console.WriteLine($"test print :{quiz} ");
                     }
 
-                    else if (commando == "s" && rooms[nr].Getsouth() != -1)
+                    else if (commando == "s" && rooms[nr].Getsouth() != -1 && quiz == true)
                     {
                         nr = rooms[nr].Getsouth();
                         rooms[nr].Print();
+                        quiz = Slump();
                     }
 
-                    else if (commando == "e" && rooms[nr].Geteast() != -1 || commando == "ö" && rooms[nr].Geteast() != -1)
+                    else if (commando == "e" && rooms[nr].Geteast() != -1 && quiz == true || commando == "ö" && rooms[nr].Geteast() != -1 && quiz == true)
                     {
                         nr = rooms[nr].Geteast();
                         rooms[nr].Print();
+                        quiz = Slump();
                     }
 
-                    else if (commando == "v" && rooms[nr].Getwest() != -1 || commando == "w" && rooms[nr].Getwest() != -1)
+                    else if (commando == "v" && rooms[nr].Getwest() != -1 && quiz == true || commando == "w" && rooms[nr].Getwest() != -1 && quiz == true)
                     {
                         nr = rooms[nr].Getwest();
                         rooms[nr].Print();
+                        quiz = Slump();
                     }
 
                     else if(commando == "n" || commando == "s" || commando == "e" || commando == "ö" || commando == "v" || commando == "w")
@@ -104,19 +110,39 @@ namespace D3_ovn_1_2_MUD
                            Console.WriteLine("n - gå norrut, s - gå söderut, v - gå västerut, ö - gå österut, q - quit");
                     }
 
+                    if (quiz == false) { Console.WriteLine("Du måste svara rätt på en fråga innan du kan lämna rummet!"); quiz = StällFråga(); }
+
                 } while (commando != "q");
 
                 stopWatch.Stop(); // Get the elapsed time as a TimeSpan value.
                 TimeSpan ts = stopWatch.Elapsed;
-                Console.WriteLine($"tid  :    {ts}");
+                Console.WriteLine($"Din tid: {ts}");
 
             }
 
-            public int Slump()
+            public int SlumpFråga()
             {
                 Random random = new Random();
                 return random.Next(1, 10);
             }
+
+            public bool Slump()
+            {
+                Random random = new Random();
+                if(1== random.Next(1, 3)) return false; else return true;
+            }
+
+            public bool StällFråga()
+            {
+                Console.Write("Vad heter du?:");
+                 string name =Console.ReadLine();
+                // if (name == "Ari") return true; else return false;
+
+                Console.WriteLine("Bra rätt svar!");
+                return true;
+            }
+
+
 
             public void Load(String file)
             {
