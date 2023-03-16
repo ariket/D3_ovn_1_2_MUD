@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.SymbolStore;
 using System.Globalization;
 using System.Net.NetworkInformation;
 using System.Runtime.Intrinsics.Arm;
@@ -66,8 +67,8 @@ namespace D3_ovn_1_2_MUD
 
                 Console.WriteLine("n - gå norrut, s - gå söderut, v - gå västerut, ö - gå österut");
                 rooms[0].Print();
-
                 
+
                 do {
                     Console.Write(">  ");
                     commando = Console.ReadLine();
@@ -76,7 +77,7 @@ namespace D3_ovn_1_2_MUD
                     {
                         nr = rooms[nr].Getnorth();
                         rooms[nr].Print();
-                        quiz = Slump(); Console.WriteLine($"test print :{quiz} ");
+                        quiz = Slump();
                     }
 
                     else if (commando == "s" && rooms[nr].Getsouth() != -1 && quiz == true)
@@ -109,21 +110,22 @@ namespace D3_ovn_1_2_MUD
                     else { Console.WriteLine($"Okänt kommando {commando}");
                            Console.WriteLine("n - gå norrut, s - gå söderut, v - gå västerut, ö - gå österut, q - quit");
                     }
-
+                    if (nr == 26) { stopWatch.Stop(); TimeSpan ts = stopWatch.Elapsed; Console.WriteLine($"Din tid: {ts}"); commando = "q"; break; }
                     if (quiz == false) { Console.WriteLine("Du måste svara rätt på en fråga innan du kan lämna rummet!"); quiz = StällFråga(); }
-
+                 
                 } while (commando != "q");
 
-                stopWatch.Stop(); // Get the elapsed time as a TimeSpan value.
-                TimeSpan ts = stopWatch.Elapsed;
-                Console.WriteLine($"Din tid: {ts}");
+               
 
             }
 
             public int SlumpFråga()
             {
                 Random random = new Random();
-                return random.Next(1, 10);
+                return random.Next(0,9
+                    
+                    
+                    );
             }
 
             public bool Slump()
@@ -134,12 +136,23 @@ namespace D3_ovn_1_2_MUD
 
             public bool StällFråga()
             {
-                Console.Write("Vad heter du?:");
-                 string name =Console.ReadLine();
-                // if (name == "Ari") return true; else return false;
-
-                Console.WriteLine("Bra rätt svar!");
-                return true;
+                bool test = false;
+                do {
+                    int number = SlumpFråga();
+                    string[] frågan = frågor[number].Split(";");
+                    Console.WriteLine($"{frågan[0]}");
+                    Console.WriteLine("Är det:");
+                    Console.WriteLine($"a: {frågan[1]}");
+                    Console.WriteLine($"b: {frågan[2]}");
+                    Console.WriteLine($"c: {frågan[3]}");
+                    Console.WriteLine($"d: {frågan[4]}");
+                    Console.Write("> ");
+                    string svar = Console.ReadLine();
+                    if (svar == frågan[5]) { Console.WriteLine($"Bra rätt svar!"); test = true; }
+                    else Console.WriteLine($"Tyvärr, fel svar, försök igen");
+                } while (!test);
+                
+                return test;
             }
 
 
@@ -159,18 +172,13 @@ namespace D3_ovn_1_2_MUD
                 //TODO
             }
         }
-
-        /* TODO lägga till timer för att mäta tid, frågesport och samtidigt ta sig från rum 0 till rum 26.
-         * göra textfil med frågor och svar
-         * slumpgenerator om rummet i fråga kräver att man svara rätt på en fråga innan man kan gå vidare
-         * slumpgenerator som slumpvis hämtar frågor från textfilen.
-
-        */
-    
-
-        public static String[] command;
+ 
+       
         static readonly string rootFolder = @"C:\Temp\Data\";// Default folder
         static string RoomFile = @"C:\Temp\Data\rooms.txt"; // Default file
+        static string Frågor = @"C:\Temp\Data\Frågor.txt"; // Default file
+        public static String[] frågor = File.ReadAllLines(Frågor);
+        public static String[] command;
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, Welcome to a MUD like game");
@@ -182,7 +190,7 @@ namespace D3_ovn_1_2_MUD
 
             do
             {
-                Console.Write(">  ");
+                Console.Write("> ");
                 command = Console.ReadLine().Split(' ');
                 //TODO Console.WriteLine($"test {command[0]}    ");if (command.Length > 1)
                 if (command[0] == "hjälp")
@@ -202,7 +210,7 @@ namespace D3_ovn_1_2_MUD
                     
                 else if (command[0] == "starta" || command[0] == "s")
                 {
-                        game.Start();
+                    game.Start();
                 }
                 
                 else if (command[0] == "sluta") { }
