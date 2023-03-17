@@ -100,7 +100,6 @@ namespace D3_ovn_1_2_MUD
                         rooms[nr].Print();
                         quiz = Slump();
                     }
-
                     else if(commando == "n" || commando == "s" || commando == "e" || commando == "ö" || commando == "v" || commando == "w")
                     { Console.WriteLine("Du gick in i väggen!"); }
 
@@ -114,44 +113,25 @@ namespace D3_ovn_1_2_MUD
                     if (quiz == false) { Console.WriteLine("Du måste svara rätt på en fråga innan du kan lämna rummet!"); quiz = StällFråga(); }
                  
                 } while (commando != "q");
-
-               
-
             }
 
             public int SlumpFråga()
-            {
-                Random random = new Random();
-                return random.Next(0,9
-                    
-                    
-                    );
-            }
+            {Random random = new Random(); return random.Next(0,9);}
 
             public bool Slump()
-            {
-                Random random = new Random();
-                if(1== random.Next(1, 3)) return false; else return true;
-            }
+            {Random random = new Random(); if(1== random.Next(1, 3)) return false; else return true;}
 
             public bool StällFråga()
             {
                 bool test = false;
                 do {
                     int number = SlumpFråga();
-                    string[] frågan = frågor[number].Split(";");
-                    Console.WriteLine($"{frågan[0]}");
-                    Console.WriteLine("Är det:");
-                    Console.WriteLine($"a: {frågan[1]}");
-                    Console.WriteLine($"b: {frågan[2]}");
-                    Console.WriteLine($"c: {frågan[3]}");
-                    Console.WriteLine($"d: {frågan[4]}");
-                    Console.Write("> ");
-                    string svar = Console.ReadLine();
-                    if (svar == frågan[5]) { Console.WriteLine($"Bra rätt svar!"); test = true; }
+                    string[] frågan = frågor[number].Split(";"); //NYI kontrollera längden på arrayen frågor, och skicka med detta till SlumpFråga
+                    Console.WriteLine($"{frågan[0]} :");
+                    Console.Write($"a: {frågan[1]} \nb: {frågan[2]} \nc: {frågan[3]} \nd: {frågan[4]} \n> ");
+                    if (Console.ReadLine() == frågan[5]) { Console.WriteLine($"Bra rätt svar!"); test = true; }
                     else Console.WriteLine($"Tyvärr, fel svar, försök igen");
                 } while (!test);
-                
                 return test;
             }
 
@@ -166,11 +146,8 @@ namespace D3_ovn_1_2_MUD
                     rooms.Add(new Room(int.Parse(parts[0]), parts[1], parts[2], int.Parse(parts[3]), int.Parse(parts[4]), int.Parse(parts[5]), int.Parse(parts[6])));
                 }
             }
-
             public void Save(String file)
-            {
-                //TODO
-            }
+            { }//TODO
         }
  
        
@@ -181,44 +158,24 @@ namespace D3_ovn_1_2_MUD
         public static String[] command;
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, Welcome to a MUD like game");
-
+            Console.WriteLine("Hello, Welcome to a MUD like game ");
             Game game = new Game();
-            
-           
-
 
             do
-            {
-                Console.Write("> ");
+            {   Console.Write("> ");
                 command = Console.ReadLine().Split(' ');
                 //TODO Console.WriteLine($"test {command[0]}    ");if (command.Length > 1)
-                if (command[0] == "hjälp")
-                {
-                    //TODO commandhelp();
-                }
-
+                if (command[0] == "hjälp"); //TODO commandhelp();
                 else if (command[0] == "ladda" || command[0] == "l")
-                {
-                        game.Load(RoomFile);
-                }
-
+                    game.Load(RoomFile);
                 else if (command[0] == "spara")
-                {
-                        game.Save(RoomFile);
-                }
-                    
+                    game.Save(RoomFile);
                 else if (command[0] == "starta" || command[0] == "s")
-                {
                     game.Start();
-                }
-                
-                else if (command[0] == "sluta") { }
-                
-                else { Console.WriteLine($"Okänt kommando {command[0]}"); }
-
+                else if (command[0] == "sluta");
+                else Console.WriteLine($"Okänt kommando {command[0]}");
             } while (command[0] != "sluta");
-            Console.WriteLine("Adjö");
+                Console.WriteLine("Adjö");
         }
     }
 }
