@@ -17,7 +17,7 @@ namespace D3_ovn_1_2_MUD
 
         public class Hero
         {
-            int[] keys = new int[5];
+            string[] keys = new string[5]; // Array av nycklar, två siffror den första anger vilket rum man ska stå i och andra siffra anger vilket rum dörren går till.
             string name = "Hero";
         }
         public class Room
@@ -29,6 +29,7 @@ namespace D3_ovn_1_2_MUD
             int east;   //nummer på nästa rum åt öster, om det inte finns något -1
             int south; //nummer på nästa rum åt söder, om det inte finns något -1
             int west; // nummer på nästa rum åt väster, om det inte finns något -1
+            string keyRoom; //vilket dörr(rum) som kan låsas upp med nyckeln från detta rummet, två siffror den första anger vilket rum man ska stå i och andra siffra anger vilket rum dörren går till.
             public Room(int number, string name, string presentation, int north = -1, int east = -1, int south = -1, int west = -1)
             {
                 this.number = number;
@@ -38,6 +39,8 @@ namespace D3_ovn_1_2_MUD
                 this.east = east;
                 this.south = south;
                 this.west = west;
+                this.keyRoom = "";
+
             }
 
             public int Getnumber() { return number; }
@@ -158,7 +161,7 @@ namespace D3_ovn_1_2_MUD
  
        
         static readonly string rootFolder = @"C:\Temp\Data\";// Default folder
-        static string RoomFile = @"C:\Temp\Data\rooms.txt"; // Default file
+        static string RoomFile = @"C:\Temp\Data\xrooms.txt"; // Default file
         static string Frågor = @"C:\Temp\Data\Frågor.txt"; // Default file
         public static String[] frågor = File.ReadAllLines(Frågor);
         public static String[] command;
