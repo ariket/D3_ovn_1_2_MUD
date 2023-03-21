@@ -14,6 +14,12 @@ namespace D3_ovn_1_2_MUD
 {
     internal class Program
     {
+
+        public class Hero
+        {
+            int[] keys = new int[5];
+            string name = "Hero";
+        }
         public class Room
         {
             int number; //ett unikt nummer på rummet
